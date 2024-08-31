@@ -2,10 +2,11 @@
 
 export const Block = props => {
 
-
     if (!props.state.cart) {
         props.state.cart = []
     }
+
+
 
     let size = props.state.cart.includes(props.book.title) ? 20 : 25
 

@@ -22,8 +22,21 @@ const Page: PageEl = (props, state:
 
   let styles = global.styles
 
+  let total_price = 0
 
-  console.log(state)
+  if (!state.cart) {
+    state.cart = []
+  }
+
+  for (let title of state.cart) {
+    let book = props.books.find(b => b.title == title)
+    if (book) {
+      total_price += (book.price * 0.8)
+    }
+  }
+
+
+
 
 
   return (
@@ -95,10 +108,10 @@ const Page: PageEl = (props, state:
       </WindowFloat> : null}
 
       <Window title="سبد خرید" style={{ margin: 10, width: "calc(100% - 20px)" }}>
-        <f-c style={{ height: 60, width: "100%" }}>
-          <f-14>مجموع قابل پرداخت : ۱۴۰۰۰ تومان</f-14>
-          <f-14>تعداد کتاب ها ۴ عدد</f-14>
-        </f-c>
+        <f-cse style={{ height: 60, width: "100%" }}>
+          <f-14>مجموع قابل پرداخت : {total_price.toLocaleString("fa-IR")} تومان</f-14>
+          <f-14>تعداد کتاب ها {state.cart.length.toLocaleString("fa-IR")} عدد</f-14>
+        </f-cse>
 
       </Window>
       <Window title={"خوش آمدید"}
