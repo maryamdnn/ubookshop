@@ -13,12 +13,17 @@ import { Block } from './Block';
 
 
 export default p => Component(p, Page);
-const Page: PageEl = (props, state, refresh, getProps) => {
+const Page: PageEl = (props, state:
+  {
+    form: string,
+    book: { title: string, author: string, country: string, imageLink: string, price: number, language: string, pages: number, },
+    cart: Array<string>
+  }, refresh, getProps) => {
 
   let styles = global.styles
-  let name = "خوش آمدید"
 
 
+  console.log(state)
 
 
   return (
@@ -62,24 +67,41 @@ const Page: PageEl = (props, state, refresh, getProps) => {
           <f-15>{(state.book.pages as number).toLocaleString("fa-IR")}</f-15>
         </f-c>
 
-        <g-b style={{backgroundColor: "#717774"}} onClick={()=>{
-          if(!state.faves)
-          {
-            state.faves = []
+        <g-b style={{
+          backgroundColor:
+            state.cart.includes(state.book.title) ? "#B67272" :
+
+              "#7CBB9D"
+        }} onClick={() => {
+
+
+          if (state.cart.includes(state.book.title)) {
+            state.cart = state.cart.filter(bookname => state.book.title != bookname)
+            state.form = null
+            refresh()
           }
-          state.faves.push(state.book.title)
-          state.form = null
-          refresh()
+          else {
+            state.cart.push(state.book.title)
+            state.form = null
+            refresh()
+          }
+
+
         }}>
-          <img src="https://irmapserver.ir/research/0/heart.png"
-            style={{ height: 20, width: 20, objectFit: "contain"}} />
+          {state.cart.includes(state.book.title) ? <f-13>حذف از سبد خرید</f-13> : <f-13>افزودن به سبد خرید</f-13>}
         </g-b >
 
 
       </WindowFloat> : null}
 
+      <Window title="سبد خرید" style={{ margin: 10, width: "calc(100% - 20px)" }}>
+        <f-c style={{ height: 60, width: "100%" }}>
+          <f-14>مجموع قابل پرداخت : ۱۴۰۰۰ تومان</f-14>
+          <f-14>تعداد کتاب ها ۴ عدد</f-14>
+        </f-c>
 
-      <Window title={name}
+      </Window>
+      <Window title={"خوش آمدید"}
         style={{ minHeight: 200, margin: 10, width: "calc(100% - 20px)" }}>
         {/* <pre style={{ direction: "ltr" }}>{JSON.stringify(props, null, 2)}</pre>
          */}
